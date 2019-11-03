@@ -1,10 +1,10 @@
+import 'package:calculadora_imc/pessoa/pessoa.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(
       MaterialApp(
         home: Home(),
         debugShowCheckedModeBanner: false,
-        
       ),
     );
 
@@ -19,6 +19,8 @@ class _HomeState extends State<Home> {
   TextEditingController _weightController = TextEditingController();
   TextEditingController _heightController = TextEditingController();
   String _result;
+  Color cor;
+  Pessoa pessoa = new Pessoa();
 
   @override
   void initState() {
@@ -29,6 +31,8 @@ class _HomeState extends State<Home> {
   void resetFields() {
     _weightController.text = '';
     _heightController.text = '';
+    pessoa.altura = 0.0;
+    pessoa.peso = 0.0;
     setState(() {
       _result = 'Informe seus dados';
     });
@@ -72,6 +76,30 @@ class _HomeState extends State<Home> {
               label: "Altura (cm)",
               error: "Insira uma altura!",
               controller: _heightController),
+          RadioListTile(
+            value: 1,
+            groupValue: pessoa.genero,
+            activeColor: Colors.red,
+            title: Text("Mulher"),
+            onChanged: (value) {
+              setState(() {
+                print("value: $value");
+                pessoa.genero = value;
+              });
+            },
+          ),
+          RadioListTile(
+            value: 2,
+            groupValue: pessoa.genero,
+            activeColor: Colors.green,
+            title: Text("Homem"),
+            onChanged: (value) {
+              setState(() {
+                print("value: $value");
+                pessoa.genero = value;
+              });
+            },
+          ),
           buildTextResult(),
           buildCalculateButton(),
         ],
@@ -80,24 +108,34 @@ class _HomeState extends State<Home> {
   }
 
   void calculateImc() {
-    double weight = double.parse(_weightController.text);
-    double height = double.parse(_heightController.text) / 100.0;
-    double imc = weight / (height * height);
+    // double weight = double.parse(_weightController.text);
+    pessoa.setPeso = double.parse(_weightController.text);
+    // double height = double.parse(_heightController.text) / 100.0;
+    pessoa.setAltura = double.parse(_heightController.text) / 100.0;
+    // double imc = weight / (height * height);
+    double imc = pessoa.getPeso / (pessoa.getAltura * pessoa.getAltura);
 
     setState(() {
       _result = "IMC = ${imc.toStringAsPrecision(2)}\n";
-      if (imc < 18.6)
+      if (imc < 18.6) {
         _result += "Abaixo do peso";
-      else if (imc < 25.0)
+        cor = Colors.redAccent;
+      } else if (imc < 25.0) {
         _result += "Peso ideal";
-      else if (imc < 30.0)
+        cor = Colors.green;
+      } else if (imc < 30.0) {
         _result += "Levemente acima do peso";
-      else if (imc < 35.0)
+        cor = Colors.greenAccent;
+      } else if (imc < 35.0) {
         _result += "Obesidade Grau I";
-      else if (imc < 40.0)
+        cor = Colors.orange;
+      } else if (imc < 40.0) {
         _result += "Obesidade Grau II";
-      else
+        cor = Colors.deepOrange;
+      } else {
         _result += "Obesidade Grau IIII";
+        cor = Colors.red;
+      }
     });
   }
 
@@ -110,7 +148,7 @@ class _HomeState extends State<Home> {
             calculateImc();
           }
         },
-        child: Text('CALCULAR', style: TextStyle(color: Colors.white)),
+        child: Text('CALCULAR', style: TextStyle(color: Colors.blueAccent)),
       ),
     );
   }
@@ -121,6 +159,7 @@ class _HomeState extends State<Home> {
       child: Text(
         _result,
         textAlign: TextAlign.center,
+        style: TextStyle(color: cor),
       ),
     );
   }
