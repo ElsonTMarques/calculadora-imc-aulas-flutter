@@ -159,7 +159,8 @@ class _HomeState extends State<Home> {
       child: Text(
         _result,
         textAlign: TextAlign.center,
-        style: TextStyle(color: cor),
+        style:
+            TextStyle(color: cor, fontWeight: FontWeight.bold, fontSize: 18.0),
       ),
     );
   }
