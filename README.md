@@ -1,3 +1,10 @@
+**Integrantes do grupo**  
+Elson Tavares Marques  150006559
+Eliara Costa  160006442
+Matheus Camilo  120006204
+Matheus Jair  160006384
+Moises Coelho  160002103
+
 # Calculadora de IMC
 
 Aplicativo de uma calculadora de IMC criado para disciplina de Programação Mobile.
